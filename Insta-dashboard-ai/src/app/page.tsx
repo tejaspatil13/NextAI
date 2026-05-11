@@ -56,16 +56,39 @@ async function startAndWait(
   onStatus: (s: ScrapeState) => void,
 ): Promise<Reel[]> {
   onStatus('starting')
-  const res = await fetch('/api/scrape', {
+
+  // Start Apify run
+  const startRes = await fetch('/api/start-scrape', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ instagramUrl, limit }),
   })
-  if (!res.ok) {
-    const err = await res.json()
-    throw new Error(err.error ?? 'Failed to fetch reels')
+  if (!startRes.ok) {
+    const err = await startRes.json()
+    throw new Error(err.error ?? 'Failed to start scrape')
   }
-  const { reels } = await res.json()
+  const job = await startRes.json() as { runId: string; datasetId: string }
+
+  // Poll until done (6 s interval, max 50 attempts = 5 minutes)
+  onStatus('starting')
+  for (let i = 0; i < 50; i++) {
+    await new Promise(r => setTimeout(r, 6000))
+    const statusRes = await fetch(`/api/scrape-status?runId=${job.runId}`)
+    if (!statusRes.ok) continue
+    const { status } = await statusRes.json() as { status: string }
+    if (status === 'SUCCEEDED') break
+    if (status === 'FAILED' || status === 'ABORTED') {
+      throw new Error(`Scrape job ${status.toLowerCase()}`)
+    }
+  }
+
+  // Fetch results
+  const resultsRes = await fetch(`/api/scrape-results?datasetId=${job.datasetId}&limit=${limit}`)
+  if (!resultsRes.ok) {
+    const err = await resultsRes.json()
+    throw new Error(err.error ?? 'Failed to fetch results')
+  }
+  const { reels } = await resultsRes.json()
   return reels as Reel[]
 }
 
