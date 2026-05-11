@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**CreatorOS AI** — Instagram Intelligence Platform  
+**NextAI** — Instagram Intelligence Platform  
 Built by Tejas Patil · tejaspatil92842@gmail.com
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -53,7 +53,7 @@ At 100 users: ₹39,500/month profit. At 1,000 users: ₹3,95,000/month.
 git remote remove origin
 
 # Create new GitHub repo at github.com/new, then:
-git remote add origin https://github.com/tejaspatil13/creatorOS-ai.git
+git remote add origin https://github.com/tejaspatil13/NextAI.git
 git branch -M main
 git push -u origin main
 ```

@@ -4,7 +4,7 @@ import path from 'path'
 
 // On Vercel, process.cwd() is read-only — use /tmp instead
 const DATA_DIR = process.env.VERCEL
-  ? '/tmp/creatorOS_cache'
+  ? '/tmp/nextai_cache'
   : path.join(process.cwd(), 'data')
 
 function ensureDir() {

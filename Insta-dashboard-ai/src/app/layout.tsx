@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Content Dashboard — @_desi.dudes_',
-  description: 'Instagram reels analytics, competitor research & content ideas',
+  title: 'NextAI — Instagram Intelligence Platform',
+  description: 'Competitor analysis, AI content ideas, hooks & scripts for Instagram creators',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
